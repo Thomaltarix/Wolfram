@@ -16,7 +16,7 @@ BINARY_PATH = $(shell stack path --local-install-root)
 all:	$(NAME)
 
 $(NAME):
-		stack build --allow-different-user
+		stack build
 		cp $(BINARY_PATH)/bin/$(BINARY_NAME) ./$(NAME)
 
 clean:

@@ -53,6 +53,12 @@ jobs:
       - name: Permissions bug workaround
         run: "chown -R $(id -un):$(id -gn) ~"
 
+      - name: Git bug workaround
+        run: "chown -R $(id -un):$(id -gn) ."
+
+      - name: Permissions bug workaround
+        run: "chown -R $(id -un):$(id -gn) ~"
+
       - name: Run compilation
         run: |
           make
