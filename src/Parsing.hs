@@ -1,9 +1,9 @@
---
+{-
 -- EPITECH PROJECT, 2024
 -- Wolfram
 -- File description:
 -- Parsing
---
+-}
 
 module Parsing (handleErrors) where
 
@@ -22,11 +22,12 @@ data Conf = Conf {  rule :: Option,
                     move :: Option}
 
 defaultConf :: Conf
-defaultConf = Conf {rule = Option {optType = None, optValue = -1, hasOption = rule},
-                    start = Option {optType = None, optValue = 0, hasOption = start},
-                    line = Option {optType = None, optValue = -1, hasOption = line},
-                    window = Option {optType = None, optValue = 80, hasOption = window},
-                    move = Option {optType = None, optValue = 0, hasOption = move}}
+defaultConf = Conf {
+    rule = Option {optType = None, optValue = -1, hasOption = rule},
+    start = Option {optType = None, optValue = 0, hasOption = start},
+    line = Option {optType = None, optValue = -1, hasOption = line},
+    window = Option {optType = None, optValue = 80, hasOption = window},
+    move = Option {optType = None, optValue = 0, hasOption = move}}
 
 buildOpt :: String -> Int -> Maybe Option
 buildOpt "--rule" value = Just (Option Rule value rule)
@@ -39,20 +40,20 @@ buildOpt _ _ = Nothing
 fillConf :: Conf -> Maybe Option -> Maybe Conf
 fillConf _ Nothing = Nothing
 fillConf conf (Just opt@(Option Rule _ hasOpt)) = case hasOpt conf of
-                                                        (Option None _ _) -> Just (conf {rule = opt})
-                                                        _ -> Nothing
+                            (Option None _ _) -> Just (conf {rule = opt})
+                            _ -> Nothing
 fillConf conf (Just opt@(Option Start _ hasOpt)) = case hasOpt conf of
-                                                        (Option None _ _) -> Just (conf {start = opt})
-                                                        _ -> Nothing
+                            (Option None _ _) -> Just (conf {start = opt})
+                            _ -> Nothing
 fillConf conf (Just opt@(Option Line _ hasOpt)) = case hasOpt conf of
-                                                        (Option None _ _) -> Just (conf {line = opt})
-                                                        _ -> Nothing
+                            (Option None _ _) -> Just (conf {line = opt})
+                            _ -> Nothing
 fillConf conf (Just opt@(Option Window _ hasOpt)) = case hasOpt conf of
-                                                        (Option None _ _) -> Just (conf {window = opt})
-                                                        _ -> Nothing
+                            (Option None _ _) -> Just (conf {window = opt})
+                            _ -> Nothing
 fillConf conf (Just opt@(Option Move _ hasOpt)) = case hasOpt conf of
-                                                        (Option None _ _) -> Just (conf {move = opt})
-                                                        _ -> Nothing
+                            (Option None _ _) -> Just (conf {move = opt})
+                            _ -> Nothing
 fillConf _ _ = Nothing
 
 getOpts ::  Maybe Conf -> [String] -> Maybe Conf
