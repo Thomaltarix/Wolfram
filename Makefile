@@ -19,7 +19,8 @@ $(NAME):
 		stack build
 		cp $(BINARY_PATH)/bin/$(BINARY_NAME) ./$(NAME)
 
-clean: stack clean
+clean:
+		stack clean
 
 fclean: clean
 		rm -f $(NAME)
