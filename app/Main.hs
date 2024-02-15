@@ -7,7 +7,7 @@
 
 module Main (main) where
 
-import Wolfram  (someFunc)
+import System.Environment (getArgs)
 
 main :: IO ()
-main = someFunc
+main = do
