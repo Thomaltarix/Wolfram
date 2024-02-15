@@ -10,7 +10,6 @@ module Parsing (handleErrors) where
 import System.Exit (exitWith, ExitCode(ExitFailure))
 
 data Type = Rule | Start | Line | Window | Move | None
-    deriving (Eq)
 
 data Option = Option {  optType :: Type,
                         optValue :: Int,
