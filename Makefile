@@ -7,7 +7,7 @@
 
 BINARY_NAME = Wolfram-exe
 
-NAME = Wolfram
+NAME = wolfram
 
 BINARY_PATH = $(shell stack path --local-install-root)
 

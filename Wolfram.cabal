@@ -25,7 +25,7 @@ source-repository head
 
 library
   exposed-modules:
-      Wolfram
+      Parsing
   other-modules:
       Paths_Wolfram
   autogen-modules:

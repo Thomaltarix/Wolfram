@@ -7,7 +7,11 @@
 
 module Main (main) where
 
-import Wolfram  (someFunc)
+import System.Environment (getArgs)
+import Parsing (handleErrors)
 
 main :: IO ()
-main = someFunc
+main = do
+    args <- getArgs
+    handleErrors args
+    return ()
