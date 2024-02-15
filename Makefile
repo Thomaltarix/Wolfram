@@ -11,7 +11,7 @@ NAME = Wolfram
 
 BINARY_PATH = $(shell stack path --local-install-root)
 
-.PHONY:	all clean fclean re
+.PHONY:	all clean fclean re tests_run exec
 
 all:	$(NAME)
 
@@ -27,7 +27,10 @@ fclean: clean
 
 re:	fclean all
 
-e:
+tests_run:
+		stack test
+
+exec:
 		stack build
 		clear
 		stack exec $(BINARY_NAME)
