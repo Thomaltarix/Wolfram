@@ -6,8 +6,6 @@ author:              "Thomaltarix"
 maintainer:          "example@example.com"
 copyright:           "2024 Thomaltarix"
 
-allow-different-user: true
-
 extra-source-files:
 - README.md
 - CHANGELOG.md
