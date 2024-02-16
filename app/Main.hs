@@ -9,8 +9,14 @@ module Main (main) where
 
 import System.Environment (getArgs)
 import System.Exit (exitWith, ExitCode(ExitFailure))
-import Parsing (handleErrors)
-import Display (displayWolfram)
+import Display (displayLine,
+                getFirstLine)
+import Parsing (handleErrors,
+                getRuleValue,
+                getStartValue,
+                getLinesValue,
+                getWindowSize,
+                getMoveValue)
 
 main :: IO ()
 main = do

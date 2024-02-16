@@ -10,9 +10,9 @@ module Parsing (handleErrors,
                 getStartValue,
                 getLinesValue,
                 getWindowSize,
-                getMoveValue,
-                Conf,
-                Option) where
+                getMoveValue) where
+
+import Text.Read (readMaybe)
 
 data Type = Rule | Start | Line | Window | Move | None
 

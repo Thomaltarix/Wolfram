@@ -5,14 +5,7 @@
 -- Wolfram
 -}
 
-module Display (displayWolfram) where
-
-import Parsing (Conf,
-                getRuleValue,
-                getStartValue,
-                getLinesValue,
-                getWindowSize,
-                getMoveValue)
+module Display (displayLine, getFirstLine) where
 
 getPatternRule30 :: Char -> Char -> Char -> String
 getPatternRule30 ' ' ' ' ' ' = " "
