@@ -34,12 +34,13 @@ defaultConf = Conf {
     window = Option {optType = None, optValue = 80, hasOption = window},
     move = Option {optType = None, optValue = 0, hasOption = move}}
 
-buildOpt :: String -> Int -> Maybe Option
-buildOpt "--rule" value = Just (Option Rule value rule)
-buildOpt "--start" value = Just (Option Start value start)
-buildOpt "--lines" value = Just (Option Line value line)
-buildOpt "--window" value = Just (Option Window value window)
-buildOpt "--move" value = Just (Option Move value move)
+buildOpt :: String -> Maybe Int -> Maybe Option
+buildOpt _ Nothing = Nothing
+buildOpt "--rule" (Just value) = Just (Option Rule value rule)
+buildOpt "--start" (Just value) = Just (Option Start value start)
+buildOpt "--lines" (Just value) = Just (Option Line value line)
+buildOpt "--window" (Just value) = Just (Option Window value window)
+buildOpt "--move" (Just value) = Just (Option Move value move)
 buildOpt _ _ = Nothing
 
 fillConf :: Conf -> Maybe Option -> Maybe Conf
@@ -66,8 +67,7 @@ getOpts Nothing _ = Nothing
 getOpts (Just conf) [] = Just conf
 getOpts (Just _) [_] = Nothing
 getOpts (Just conf) (opt:value:opts) = do
-    let newOpt = buildOpt opt (read value :: Int)
-    newConf <- fillConf conf newOpt
+    newConf <- fillConf conf (buildOpt opt (readMaybe value :: Maybe Int))
     getOpts (Just newConf) opts
 
 isRuleSet :: Int -> Bool
