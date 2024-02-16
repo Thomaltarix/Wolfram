@@ -25,8 +25,6 @@ main = do
         Nothing -> exitWith (ExitFailure 84)
         Just conf' -> displayLine
                 (getFirstLine "*" (getWindowSize conf' - 1))
-                (getRuleValue conf')
-                (getStartValue conf')
-                (getLinesValue conf')
-                (getMoveValue conf')
+                (getRuleValue conf') (getStartValue conf')
+                (getLinesValue conf')(getMoveValue conf')
                 (getWindowSize conf')
