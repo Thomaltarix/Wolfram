@@ -25,6 +25,7 @@ source-repository head
 
 library
   exposed-modules:
+      Display
       Parsing
   other-modules:
       Paths_Wolfram
