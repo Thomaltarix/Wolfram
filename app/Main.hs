@@ -15,5 +15,8 @@ import Display (displayWolfram)
 main :: IO ()
 main = do
     args <- getArgs
-    handleErrors args
+    let conf = handleErrors args
+    case conf of
+        Nothing -> exitWith (ExitFailure 84)
+        Just conf2 -> displayWolfram conf2
     return ()
