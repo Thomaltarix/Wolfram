@@ -5,9 +5,14 @@
 -- Parsing
 -}
 
-module Parsing (handleErrors) where
+module Parsing (handleErrors,
+                getRuleValue,
+                getStartValue,
+                getLinesValue,
+                getWindowSize,
+                getMoveValue) where
 
-import System.Exit (exitWith, ExitCode(ExitFailure))
+import Text.Read (readMaybe)
 
 data Type = Rule | Start | Line | Window | Move | None
 
@@ -29,12 +34,13 @@ defaultConf = Conf {
     window = Option {optType = None, optValue = 80, hasOption = window},
     move = Option {optType = None, optValue = 0, hasOption = move}}
 
-buildOpt :: String -> Int -> Maybe Option
-buildOpt "--rule" value = Just (Option Rule value rule)
-buildOpt "--start" value = Just (Option Start value start)
-buildOpt "--lines" value = Just (Option Line value line)
-buildOpt "--window" value = Just (Option Window value window)
-buildOpt "--move" value = Just (Option Move value move)
+buildOpt :: String -> Maybe Int -> Maybe Option
+buildOpt _ Nothing = Nothing
+buildOpt "--rule" (Just value) = Just (Option Rule value rule)
+buildOpt "--start" (Just value) = Just (Option Start value start)
+buildOpt "--lines" (Just value) = Just (Option Line value line)
+buildOpt "--window" (Just value) = Just (Option Window value window)
+buildOpt "--move" (Just value) = Just (Option Move value move)
 buildOpt _ _ = Nothing
 
 fillConf :: Conf -> Maybe Option -> Maybe Conf
@@ -61,8 +67,7 @@ getOpts Nothing _ = Nothing
 getOpts (Just conf) [] = Just conf
 getOpts (Just _) [_] = Nothing
 getOpts (Just conf) (opt:value:opts) = do
-    let newOpt = buildOpt opt (read value :: Int)
-    newConf <- fillConf conf newOpt
+    newConf <- fillConf conf (buildOpt opt (readMaybe value :: Maybe Int))
     getOpts (Just newConf) opts
 
 isRuleSet :: Int -> Bool
@@ -71,14 +76,27 @@ isRuleSet 90 = True
 isRuleSet 110 = True
 isRuleSet _ = False
 
-checkRuleSet :: Conf -> IO ()
-checkRuleSet (Conf {rule = Option {optValue = ruleSet}}) =
-    if isRuleSet ruleSet then return ()
-    else exitWith (ExitFailure 84)
+checkRuleSet :: Conf -> Maybe Conf
+checkRuleSet conf@(Conf {rule = Option {optValue = ruleSet}}) =
+    if isRuleSet ruleSet then Just conf
+    else Nothing
 
-handleErrors :: [String] -> IO ()
-handleErrors [] = exitWith (ExitFailure 84)
-handleErrors args = let conf = getOpts (Just defaultConf) args in
-                        case conf of
-                            Nothing -> exitWith (ExitFailure 84)
-                            Just conf2 -> checkRuleSet conf2
+handleErrors :: [String] -> Maybe Conf
+handleErrors [] = Nothing
+handleErrors args = checkRuleSet =<< getOpts (Just defaultConf) args
+
+getRuleValue :: Conf -> Int
+getRuleValue (Conf {rule = Option {optValue = ruleSet}}) = ruleSet
+
+getStartValue :: Conf -> Int
+getStartValue (Conf {start = Option {optValue = startSet}}) = startSet
+
+getLinesValue :: Conf -> Int
+getLinesValue (Conf {line = Option {optValue = linesSet}}) = linesSet
+
+getWindowSize :: Conf -> Int
+getWindowSize (Conf {window = Option {optValue = windowSet}}) = windowSet
+
+getMoveValue :: Conf -> Int
+getMoveValue (Conf {move = Option {optValue = moveSet}}) = moveSet
+
