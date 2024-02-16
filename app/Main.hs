@@ -21,8 +21,12 @@ import Parsing (handleErrors,
 main :: IO ()
 main = do
     args <- getArgs
-    let conf = handleErrors args
-    case conf of
+    case handleErrors args of
         Nothing -> exitWith (ExitFailure 84)
-        Just conf2 -> displayWolfram conf2
-    return ()
+        Just conf' -> displayLine
+                (getFirstLine "*" (getWindowSize conf' - 1))
+                (getRuleValue conf')
+                (getStartValue conf')
+                (getLinesValue conf')
+                (getMoveValue conf')
+                (getWindowSize conf')
