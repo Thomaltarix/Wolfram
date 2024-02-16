@@ -5,9 +5,14 @@
 -- Parsing
 -}
 
-module Parsing (handleErrors) where
-
-import System.Exit (exitWith, ExitCode(ExitFailure))
+module Parsing (handleErrors,
+                getRuleValue,
+                getStartValue,
+                getLinesValue,
+                getWindowSize,
+                getMoveValue,
+                Conf,
+                Option) where
 
 data Type = Rule | Start | Line | Window | Move | None
 
@@ -71,14 +76,27 @@ isRuleSet 90 = True
 isRuleSet 110 = True
 isRuleSet _ = False
 
-checkRuleSet :: Conf -> IO ()
-checkRuleSet (Conf {rule = Option {optValue = ruleSet}}) =
-    if isRuleSet ruleSet then return ()
-    else exitWith (ExitFailure 84)
+checkRuleSet :: Conf -> Maybe Conf
+checkRuleSet conf@(Conf {rule = Option {optValue = ruleSet}}) =
+    if isRuleSet ruleSet then Just conf
+    else Nothing
 
-handleErrors :: [String] -> IO ()
-handleErrors [] = exitWith (ExitFailure 84)
-handleErrors args = let conf = getOpts (Just defaultConf) args in
-                        case conf of
-                            Nothing -> exitWith (ExitFailure 84)
-                            Just conf2 -> checkRuleSet conf2
+handleErrors :: [String] -> Maybe Conf
+handleErrors [] = Nothing
+handleErrors args = checkRuleSet =<< getOpts (Just defaultConf) args
+
+getRuleValue :: Conf -> Int
+getRuleValue (Conf {rule = Option {optValue = ruleSet}}) = ruleSet
+
+getStartValue :: Conf -> Int
+getStartValue (Conf {start = Option {optValue = startSet}}) = startSet
+
+getLinesValue :: Conf -> Int
+getLinesValue (Conf {line = Option {optValue = linesSet}}) = linesSet
+
+getWindowSize :: Conf -> Int
+getWindowSize (Conf {window = Option {optValue = windowSet}}) = windowSet
+
+getMoveValue :: Conf -> Int
+getMoveValue (Conf {move = Option {optValue = moveSet}}) = moveSet
+
