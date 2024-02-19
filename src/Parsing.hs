@@ -37,9 +37,15 @@ defaultConf = Conf {
 buildOpt :: String -> Maybe Int -> Maybe Option
 buildOpt _ Nothing = Nothing
 buildOpt "--rule" (Just value) = Just (Option Rule value rule)
-buildOpt "--start" (Just value) = Just (Option Start value start)
-buildOpt "--lines" (Just value) = Just (Option Line value line)
-buildOpt "--window" (Just value) = Just (Option Window value window)
+buildOpt "--start" (Just value)
+    | value < 0 = Nothing
+    | otherwise = Just (Option Start value start)
+buildOpt "--lines" (Just value)
+    | value < 0 = Nothing
+    | otherwise = Just (Option Line value line)
+buildOpt "--window" (Just value)
+    | value < 0 = Nothing
+    | otherwise = Just (Option Window value window)
 buildOpt "--move" (Just value) = Just (Option Move value move)
 buildOpt _ _ = Nothing
 
@@ -99,4 +105,3 @@ getWindowSize (Conf {window = Option {optValue = windowSet}}) = windowSet
 
 getMoveValue :: Conf -> Int
 getMoveValue (Conf {move = Option {optValue = moveSet}}) = moveSet
-
