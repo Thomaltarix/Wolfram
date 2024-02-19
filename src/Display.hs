@@ -67,8 +67,9 @@ printString _ 0 _ = putStrLn ""
 printString str size move
     | move >= 0 = putStrLn (take size (drop ((length str - size) `div` 4)
     (getStringFromChar ' ' move ++ str)))
-    | otherwise = putStrLn (take size (drop ((length str - size + (-move * 4)) `div` 4)
-    (str ++ getStringFromChar ' ' (-move))))
+    | otherwise = putStrLn (take size (drop
+        ((length str - size + (-move * 4)) `div` 4)
+        (str ++ getStringFromChar ' ' (-move))))
 
 displayStarted :: String -> Int -> Int -> Int -> Int -> Int -> IO ()
 displayStarted _ _ _ 0 _ _ = return ()
