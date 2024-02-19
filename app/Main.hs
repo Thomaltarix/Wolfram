@@ -24,7 +24,8 @@ main = do
     case handleErrors args of
         Nothing -> putStrLn "Invalid line formatting" >>
             exitWith (ExitFailure 84)
-                (getFirstLine "*" (getWindowSize conf' - 1))
-                (getRuleValue conf') (getStartValue conf')
-                (getLinesValue conf')(getMoveValue conf')
-                (getWindowSize conf')
+        Just conf -> displayLine
+                (getFirstLine "*" (getWindowSize conf - 1))
+                (getRuleValue conf) (getStartValue conf)
+                (getLinesValue conf)(getMoveValue conf)
+                (getWindowSize conf)
