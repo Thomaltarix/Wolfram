@@ -57,11 +57,18 @@ getFirstLine str 0 = str
 getFirstLine str n = if n >= 2 then getFirstLine (" " ++ str ++ " ") (n - 2)
                     else getFirstLine (" " ++ str) (n - 1)
 
-printString :: String -> Int -> IO ()
-printString [] _ = return ()
-printString _ 0 = putStrLn ""
-printString str size =
-    putStrLn (take size (drop ((length str - size) `div` 4) str))
+getStringFromChar :: Char -> Int -> String
+getStringFromChar _ 0 = ""
+getStringFromChar c size = c : getStringFromChar c (size - 1)
+
+printString :: String -> Int -> Int -> IO ()
+printString [] _ _ = return ()
+printString _ 0 _ = putStrLn ""
+printString str size move
+    | move >= 0 = putStrLn (take size (drop ((length str - size) `div` 4)
+    (getStringFromChar ' ' move ++ str)))
+    | otherwise = putStrLn (take size (drop ((length str - size + (-move * 4)) `div` 4)
+    (str ++ getStringFromChar ' ' (-move))))
 
 displayStarted :: String -> Int -> Int -> Int -> Int -> Int -> IO ()
 displayStarted _ _ _ 0 _ _ = return ()
@@ -69,7 +76,7 @@ displayStarted string rule start line move 0 =
     putStrLn "" >> displayLine string rule start (line - 1) move 0
 displayStarted string rule start line move size =
     let newString = getNewStr ("  " ++ string ++ "  ") rule in
-    printString string size >>
+    printString string size move >>
     displayStarted newString rule start (line - 1) move size
 
 displayLine :: String -> Int -> Int -> Int -> Int -> Int -> IO ()
