@@ -90,10 +90,9 @@ getOpts (Just conf) (opt:value:opts) = do
     getOpts (Just newConf) opts
 
 checkRuleSet :: Conf -> Maybe Conf
-checkRuleSet conf@(Conf {rule = Option {optValue = 30}}) = Just conf
-checkRuleSet conf@(Conf {rule = Option {optValue = 90}}) = Just conf
-checkRuleSet conf@(Conf {rule = Option {optValue = 110}}) = Just conf
-checkRuleSet _ = Nothing
+checkRuleSet conf@(Conf {rule = Option {optValue = value}})
+    | value >= 0 && value <= 255 = Just conf
+    | otherwise = Nothing
 
 getRule :: Conf -> Int
 getRule (Conf {rule = Option {optValue = ruleSet}}) = ruleSet
