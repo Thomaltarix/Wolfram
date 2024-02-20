@@ -11,8 +11,9 @@ import System.Environment (getArgs)
 import System.Exit (exitWith, ExitCode(ExitFailure))
 import Display (displayLine,
                 getFirstLine)
-import Parsing (getRuleValue, getStartValue, getLinesValue, getWindowSize,
-                getMoveValue, getOpts, defaultConf, checkRuleSet)
+import Parsing (getRule, getStart, getLines, getWindow, getMove,
+                getCharacter, getOpts, defaultConf, checkRuleSet)
+import Data.Char (chr)
 
 main :: IO ()
 main = do
@@ -21,8 +22,8 @@ main = do
         Nothing -> putStrLn "Invalid line formatting" >>
             exitWith (ExitFailure 84)
         Just conf -> displayLine
-                (getFirstLine "*" (getWindowSize conf - 1))
-                (getRuleValue conf) (getStartValue conf)
-                (getLinesValue conf)(getMoveValue conf)
-                (getWindowSize conf)
-
+                (getFirstLine [(chr (getCharacter conf))]
+                (getWindow conf - 1)) (getRule conf)
+                (getStart conf) (getLines conf)
+                (getMove conf) (getWindow conf)
+                (getCharacter conf)

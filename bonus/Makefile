@@ -5,15 +5,13 @@
 ## Makefile
 ##
 
-BINARY_NAME = Wolfram-exe
+BINARY_NAME = bonus-exe
 
-NAME = wolfram
-
-BONUS_NAME = bonus_wolfram
+NAME = bonus_wolfram
 
 BINARY_PATH = $(shell stack path --local-install-root)
 
-.PHONY:	all clean fclean re tests_run bonus
+.PHONY:	all clean fclean re tests_run exec
 
 all:	$(NAME)
 
@@ -23,18 +21,16 @@ $(NAME):
 
 clean:
 		stack clean
-		make clean -sC bonus/
 
 fclean: clean
-		make fclean -sC bonus/
 		rm -f $(NAME)
-		rm -f $(BONUS_NAME)
 
 re:	fclean all
 
 tests_run:
 		stack test
 
-bonus:
-		make re -sC bonus/
-		cp bonus/$(BONUS_NAME) ./
+exec:
+		stack build
+		clear
+		stack exec $(BINARY_NAME)

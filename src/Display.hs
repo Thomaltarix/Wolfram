@@ -54,8 +54,9 @@ getNewStr (x:y:z:xs) rule = getPattern rule x y z ++getNewStr (y:z:xs) rule
 
 getFirstLine :: String -> Int -> String
 getFirstLine str 0 = str
-getFirstLine str n = if n >= 2 then getFirstLine (" " ++ str ++ " ") (n - 2)
-                    else getFirstLine (" " ++ str) (n - 1)
+getFirstLine str n
+    | n >= 2 = getFirstLine (" " ++ str ++ " ") (n - 2)
+    | otherwise = getFirstLine (" " ++ str) (n - 1)
 
 getStringFromChar :: Char -> Int -> String
 getStringFromChar _ 0 = ""
@@ -71,19 +72,14 @@ printString str size move
         ((length str - size + (-move * 4)) `div` 4)
         (str ++ getStringFromChar ' ' (-move))))
 
-displayStarted :: String -> Int -> Int -> Int -> Int -> Int -> IO ()
-displayStarted _ _ _ 0 _ _ = return ()
-displayStarted string rule start line move 0 =
-    putStrLn "" >> displayLine string rule start (line - 1) move 0
-displayStarted string rule start line move size =
-    let newString = getNewStr ("  " ++ string ++ "  ") rule in
-    printString string size move >>
-    displayStarted newString rule start (line - 1) move size
-
 displayLine :: String -> Int -> Int -> Int -> Int -> Int -> IO ()
 displayLine _ _ _ 0 _ _ = return ()
-displayLine string rule 0 line move size =
-    displayStarted string rule 0 line move size
-displayLine string rule start line move size =
+displayLine string rule 0 line move 0 =                     -- Start == 0 && window == 0
+    putStrLn "" >> displayLine string rule 0 (line - 1) move 0
+displayLine string rule 0 line move size =                  -- Start == 0
+    let newString = getNewStr ("  " ++ string ++ "  ") rule in
+    printString string size move >>
+    displayLine newString rule 0 (line - 1) move size
+displayLine string rule start line move size =              -- Start != 0
     let newString = getNewStr ("  " ++ string ++ "  ") rule in
     displayLine newString rule (start - 1) line move size
