@@ -9,9 +9,11 @@ BINARY_NAME = Wolfram-exe
 
 NAME = wolfram
 
+BONUS_NAME = bonus_wolfram
+
 BINARY_PATH = $(shell stack path --local-install-root)
 
-.PHONY:	all clean fclean re tests_run exec
+.PHONY:	all clean fclean re tests_run exec bonus
 
 all:	$(NAME)
 
@@ -24,6 +26,7 @@ clean:
 
 fclean: clean
 		rm -f $(NAME)
+		rm -f $(BONUS_NAME)
 
 re:	fclean all
 
@@ -34,3 +37,8 @@ exec:
 		stack build
 		clear
 		stack exec $(BINARY_NAME)
+
+bonus:
+		make fclean -C bonus/
+		make -C bonus/
+		cp bonus/$(BONUS_NAME) ./
