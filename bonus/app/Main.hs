@@ -11,20 +11,14 @@ import System.Environment (getArgs)
 import System.Exit (exitWith, ExitCode(ExitFailure))
 import Display (displayLine,
                 getFirstLine)
-import Parsing (getRule,
-                getStart,
-                getLines,
-                getWindow,
-                getMove,
-                getCharacter,
-                getOpts,
-                defaultConf)
+import Parsing (getRule, getStart, getLines, getWindow, getMove,
+                getCharacter, getOpts, defaultConf, checkRuleSet)
 import Data.Char (chr)
 
 main :: IO ()
 main = do
     args <- getArgs
-    case (getOpts (Just defaultConf) args) of
+    case (checkRuleSet =<< getOpts (Just defaultConf) args) of
         Nothing -> putStrLn "Invalid line formatting" >>
             exitWith (ExitFailure 84)
         Just conf -> displayLine

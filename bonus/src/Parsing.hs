@@ -12,7 +12,8 @@ module Parsing (getRule,
                 getMove,
                 getCharacter,
                 getOpts,
-                defaultConf) where
+                defaultConf,
+                checkRuleSet) where
 
 import Text.Read (readMaybe)
 
@@ -87,6 +88,12 @@ getOpts (Just _) [_] = Nothing
 getOpts (Just conf) (opt:value:opts) = do
     newConf <- fillConf conf (buildOpt opt (readMaybe value :: Maybe Int))
     getOpts (Just newConf) opts
+
+checkRuleSet :: Conf -> Maybe Conf
+checkRuleSet conf@(Conf {rule = Option {optValue = 30}}) = Just conf
+checkRuleSet conf@(Conf {rule = Option {optValue = 90}}) = Just conf
+checkRuleSet conf@(Conf {rule = Option {optValue = 110}}) = Just conf
+checkRuleSet _ = Nothing
 
 getRule :: Conf -> Int
 getRule (Conf {rule = Option {optValue = ruleSet}}) = ruleSet
