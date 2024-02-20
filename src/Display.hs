@@ -7,50 +7,30 @@
 
 module Display (displayLine, getFirstLine) where
 
-getPatternRule30 :: Char -> Char -> Char -> String
-getPatternRule30 '*' '*' '*' = " "
-getPatternRule30 '*' '*' ' ' = " "
-getPatternRule30 '*' ' ' '*' = " "
-getPatternRule30 '*' ' ' ' ' = "*"
-getPatternRule30 ' ' '*' '*' = "*"
-getPatternRule30 ' ' '*' ' ' = "*"
-getPatternRule30 ' ' ' ' '*' = "*"
-getPatternRule30 ' ' ' ' ' ' = " "
-getPatternRule30 _ _ _ = " "
+import Data.Bits(shiftR, (.&.))
 
-getPatternRule90 :: Char -> Char -> Char -> String
-getPatternRule90 '*' '*' '*' = " "
-getPatternRule90 '*' '*' ' ' = "*"
-getPatternRule90 '*' ' ' '*' = " "
-getPatternRule90 '*' ' ' ' ' = "*"
-getPatternRule90 ' ' '*' '*' = "*"
-getPatternRule90 ' ' '*' ' ' = " "
-getPatternRule90 ' ' ' ' '*' = "*"
-getPatternRule90 ' ' ' ' ' ' = " "
-getPatternRule90 _ _ _ = " "
+getBinaryValue :: Int -> Int -> String
+getBinaryValue n index
+    | shiftR n index .&. 1 == 0 = " "
+    | otherwise = "*"
 
-getPatternRule110 :: Char -> Char -> Char -> String
-getPatternRule110 '*' '*' '*' = " "
-getPatternRule110 '*' '*' ' ' = "*"
-getPatternRule110 '*' ' ' '*' = "*"
-getPatternRule110 '*' ' ' ' ' = " "
-getPatternRule110 ' ' '*' '*' = "*"
-getPatternRule110 ' ' '*' ' ' = "*"
-getPatternRule110 ' ' ' ' '*' = "*"
-getPatternRule110 ' ' ' ' ' ' = " "
-getPatternRule110 _ _ _ = " "
-
-getPattern :: Int -> Char -> Char -> Char -> String
-getPattern 30 a b c = getPatternRule30 a b c
-getPattern 90 a b c = getPatternRule90 a b c
-getPattern 110 a b c = getPatternRule110 a b c
-getPattern _ _ _ _ = ""
+getPatternRule :: Int -> Char -> Char -> Char -> String
+getPatternRule n '*' '*' '*' = getBinaryValue n 7
+getPatternRule n '*' '*' ' ' = getBinaryValue n 6
+getPatternRule n '*' ' ' '*' = getBinaryValue n 5
+getPatternRule n '*' ' ' ' ' = getBinaryValue n 4
+getPatternRule n ' ' '*' '*' = getBinaryValue n 3
+getPatternRule n ' ' '*' ' ' = getBinaryValue n 2
+getPatternRule n ' ' ' ' '*' = getBinaryValue n 1
+getPatternRule n ' ' ' ' ' ' = getBinaryValue n 0
+getPatternRule _ _ _ _ = ""
 
 getNewStr :: String -> Int -> String
 getNewStr [] _ = []
 getNewStr [x] _ = [x]
 getNewStr [x, y] _ = [x, y]
-getNewStr (x:y:z:xs) rule = getPattern rule x y z ++getNewStr (y:z:xs) rule
+getNewStr (x:y:z:xs) rule =
+    getPatternRule rule x y z ++ getNewStr (y:z:xs) rule
 
 getFirstLine :: String -> Int -> String
 getFirstLine str 0 = str
