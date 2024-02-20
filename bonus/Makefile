@@ -7,7 +7,7 @@
 
 BINARY_NAME = bonus-exe
 
-NAME = wolfram
+NAME = bonus_wolfram
 
 BINARY_PATH = $(shell stack path --local-install-root)
 

@@ -35,8 +35,9 @@ getNewStr (x:y:z:xs) rule char =
 
 getFirstLine :: String -> Int -> String
 getFirstLine str 0 = str
-getFirstLine str n = if n >= 2 then getFirstLine (" " ++ str ++ " ") (n - 2)
-                    else getFirstLine (" " ++ str) (n - 1)
+getFirstLine str n
+    | n >= 2 = getFirstLine (" " ++ str ++ " ") (n - 2)
+    | otherwise = getFirstLine (" " ++ str) (n - 1)
 
 getStringFromChar :: Char -> Int -> String
 getStringFromChar _ 0 = ""

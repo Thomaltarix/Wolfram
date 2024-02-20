@@ -25,7 +25,8 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      Display
+      Parsing
   other-modules:
       Paths_bonus
   autogen-modules:
