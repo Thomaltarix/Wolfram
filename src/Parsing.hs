@@ -5,12 +5,13 @@
 -- Parsing
 -}
 
-module Parsing (handleErrors,
-                getRuleValue,
+module Parsing (getRuleValue,
                 getStartValue,
                 getLinesValue,
                 getWindowSize,
-                getMoveValue) where
+                getMoveValue,
+                getOpts,
+                defaultConf) where
 
 import Text.Read (readMaybe)
 
@@ -36,7 +37,9 @@ defaultConf = Conf {
 
 buildOpt :: String -> Maybe Int -> Maybe Option
 buildOpt _ Nothing = Nothing
-buildOpt "--rule" (Just value) = Just (Option Rule value rule)
+buildOpt "--rule" (Just 30) = Just (Option Rule 30 rule)
+buildOpt "--rule" (Just 90) = Just (Option Rule 90 rule)
+buildOpt "--rule" (Just 110) = Just (Option Rule 110 rule)
 buildOpt "--start" (Just value)
     | value < 0 = Nothing
     | otherwise = Just (Option Start value start)
@@ -75,21 +78,6 @@ getOpts (Just _) [_] = Nothing
 getOpts (Just conf) (opt:value:opts) = do
     newConf <- fillConf conf (buildOpt opt (readMaybe value :: Maybe Int))
     getOpts (Just newConf) opts
-
-isRuleSet :: Int -> Bool
-isRuleSet 30 = True
-isRuleSet 90 = True
-isRuleSet 110 = True
-isRuleSet _ = False
-
-checkRuleSet :: Conf -> Maybe Conf
-checkRuleSet conf@(Conf {rule = Option {optValue = ruleSet}}) =
-    if isRuleSet ruleSet then Just conf
-    else Nothing
-
-handleErrors :: [String] -> Maybe Conf
-handleErrors [] = Nothing
-handleErrors args = checkRuleSet =<< getOpts (Just defaultConf) args
 
 getRuleValue :: Conf -> Int
 getRuleValue (Conf {rule = Option {optValue = ruleSet}}) = ruleSet
