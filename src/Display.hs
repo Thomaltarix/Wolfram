@@ -72,19 +72,14 @@ printString str size move
         ((length str - size + (-move * 4)) `div` 4)
         (str ++ getStringFromChar ' ' (-move))))
 
-displayStarted :: String -> Int -> Int -> Int -> Int -> Int -> IO ()
-displayStarted _ _ _ 0 _ _ = return ()
-displayStarted string rule start line move 0 =
-    putStrLn "" >> displayLine string rule start (line - 1) move 0
-displayStarted string rule start line move size =
-    let newString = getNewStr ("  " ++ string ++ "  ") rule in
-    printString string size move >>
-    displayStarted newString rule start (line - 1) move size
-
 displayLine :: String -> Int -> Int -> Int -> Int -> Int -> IO ()
 displayLine _ _ _ 0 _ _ = return ()
-displayLine string rule 0 line move size =
-    displayStarted string rule 0 line move size
-displayLine string rule start line move size =
+displayLine string rule 0 line move 0 =                     -- Start == 0 && window == 0
+    putStrLn "" >> displayLine string rule 0 (line - 1) move 0
+displayLine string rule 0 line move size =                  -- Start == 0
+    let newString = getNewStr ("  " ++ string ++ "  ") rule in
+    printString string size move >>
+    displayLine newString rule 0 (line - 1) move size
+displayLine string rule start line move size =              -- Start != 0
     let newString = getNewStr ("  " ++ string ++ "  ") rule in
     displayLine newString rule (start - 1) line move size
