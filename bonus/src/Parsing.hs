@@ -54,7 +54,7 @@ buildOpt "--window" (Just value)
     | value < 0 = Nothing
     | otherwise = Just (Option Window value window)
 buildOpt "--move" (Just value) = Just (Option Move value move)
-buildOpt "--character" (Just value)
+buildOpt "--char" (Just value)
     |  value < 32 || value > 126 = Nothing
     | otherwise = Just (Option Character value character)
 buildOpt _ _ = Nothing

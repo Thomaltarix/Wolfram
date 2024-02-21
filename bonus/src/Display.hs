@@ -7,31 +7,30 @@
 
 module Display (displayLine, getFirstLine, getBinaryValue) where
 
-import Data.Bits(shiftR, (.&.))
+import Data.Bits(shiftR, shiftL, (.&.))
 import Data.Char(chr)
 
 getBinaryValue :: Int -> Int -> Int -> String
-getBinaryValue n index char
+getBinaryValue n char index
     | shiftR n index .&. 1 == 0 = " "
     | otherwise = [(chr char)]
 
-getPatternRule :: Int -> Char -> Char -> Char -> Int -> String
-getPatternRule n '*' '*' '*' char = getBinaryValue n 7 char
-getPatternRule n '*' '*' ' ' char = getBinaryValue n 6 char
-getPatternRule n '*' ' ' '*' char = getBinaryValue n 5 char
-getPatternRule n '*' ' ' ' ' char = getBinaryValue n 4 char
-getPatternRule n ' ' '*' '*' char = getBinaryValue n 3 char
-getPatternRule n ' ' '*' ' ' char = getBinaryValue n 2 char
-getPatternRule n ' ' ' ' '*' char = getBinaryValue n 1 char
-getPatternRule n ' ' ' ' ' ' char = getBinaryValue n 0 char
-getPatternRule _ _ _ _ _ = ""
+isntSpace :: Char -> Bool
+isntSpace ' ' = False
+isntSpace _ = True
+
+getNumberFromBool :: Bool -> Bool -> Bool -> Int
+getNumberFromBool b1 b2 b3 =
+    shiftL (fromEnum b1) 2 + shiftL (fromEnum b2) 1 + shiftL (fromEnum b3) 0
 
 getNewStr :: String -> Int -> Int -> String
 getNewStr [] _ _ = []
 getNewStr [x] _ _ = [x]
 getNewStr [x, y] _ _ = [x, y]
 getNewStr (x:y:z:xs) rule char =
-    getPatternRule rule x y z char ++ getNewStr (y:z:xs) rule char
+    (getBinaryValue rule char
+    (getNumberFromBool (isntSpace x) (isntSpace y) (isntSpace z)))
+    ++ getNewStr (y:z:xs) rule char
 
 getFirstLine :: String -> Int -> String
 getFirstLine str 0 = str
