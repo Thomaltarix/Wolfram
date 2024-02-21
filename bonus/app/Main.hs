@@ -17,13 +17,15 @@ import Data.Char (chr)
 
 displayHelp :: IO ()
 displayHelp = putStrLn "Invalid line formatting\n" >>
-    putStrLn
-    "Usage: ./wolfram --rule r --start s --lines l --window w --move m" >>
-    putStrLn "r: rule (30, 90, 110) (Neccessary)" >>
-    putStrLn "s: start (int) (Optional)" >>
-    putStrLn "l: lines (int) (Optional)" >>
-    putStrLn "w: window (int) (Optional)" >>
-    putStrLn "m: move (int) (Optional)" >>
+    putStrLn "Usage:" >>
+    putStr "\t./wolfram --rule r --start s --lines l" >>
+    putStrLn "--window w --move m --char c\n" >>
+    putStrLn "\tr: rule (30, 90, 110) (Neccessary)" >>
+    putStrLn "\ts: start (int) (Optional)" >>
+    putStrLn "\tl: lines (int) (Optional)" >>
+    putStrLn "\tw: window (int) (Optional)" >>
+    putStrLn "\tm: move (int) (Optional)" >>
+    putStrLn "\tc: char (visible ascii character integer) (Optional) " >>
     exitWith (ExitFailure 84)
 
 main :: IO ()
