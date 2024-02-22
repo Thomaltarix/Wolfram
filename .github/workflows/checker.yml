@@ -35,6 +35,7 @@ jobs:
           done < $input
           if [ -s $input ]
           then
+              cat $input
               exit 1
           fi
 
