@@ -15,7 +15,8 @@ BONUS_NAME = bonus_wolfram
 
 BINARY_PATH = $(shell stack path --local-install-root)
 
-COVERAGE_PATH = $(BINARY_PATH)/hpc/Wolfram/$(COVERAGE_NAME)/$(COVERAGE_NAME).tix
+COVERAGE_PATH = \
+	$(BINARY_PATH)/hpc/Wolfram/$(COVERAGE_NAME)/$(COVERAGE_NAME).tix
 
 .PHONY:	all clean fclean re tests_run bonus
 
