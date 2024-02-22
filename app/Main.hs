@@ -5,7 +5,7 @@
 -- Main
 -}
 
-module Main (main) where
+module Main (main, displayHelp) where
 
 import System.Environment (getArgs)
 import System.Exit (exitWith, ExitCode(ExitFailure))
@@ -28,11 +28,11 @@ displayHelp = putStrLn "Invalid line formatting\n" >>
 main :: IO ()
 main = do
     args <- getArgs
-    case (checkRuleSet =<< getOpts (Just defaultConf) args) of
+    case checkRuleSet =<< getOpts (Just defaultConf) args of
         Nothing -> displayHelp
         Just conf -> displayLine
                 (getFirstLine "*" (getWindowSize conf - 1))
                 (getRuleValue conf) (getStartValue conf)
-                (getLinesValue conf)(getMoveValue conf)
+                (getLinesValue conf) (getMoveValue conf)
                 (getWindowSize conf)
 

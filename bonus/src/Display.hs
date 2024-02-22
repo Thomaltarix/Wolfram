@@ -5,7 +5,7 @@
 -- Wolfram
 -}
 
-module Display (displayLine, getFirstLine, getBinaryValue) where
+module Display (displayLine, getFirstLine, getBinaryValue, isntSpace) where
 
 import Data.Bits(shiftR, shiftL, (.&.))
 import Data.Char(chr)
