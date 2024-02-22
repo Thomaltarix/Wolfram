@@ -34,6 +34,7 @@ fclean: clean
 		rm -f $(NAME)
 		rm -f $(BONUS_NAME)
 		rm -rf test/coverage
+		rm -f app/Main
 
 re:	fclean all
 
@@ -41,6 +42,11 @@ tests_run:
 		stack test --coverage
 		mkdir -p test/coverage
 		cp $(COVERAGE_PATH) test/coverage/
+
+clean_tests:
+		rm -rf test/coverage
+		rm -f $(COVERAGE_PATH)
+		rm -f app/Main
 
 bonus:
 		make re -sC bonus/
