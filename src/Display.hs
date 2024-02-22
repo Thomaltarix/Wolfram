@@ -5,7 +5,11 @@
 -- Wolfram
 -}
 
-module Display (displayLine, getFirstLine) where
+module Display (getBinaryValue,
+                getPatternRule,
+                getNewStr,
+                getFirstLine,
+                displayLine) where
 
 import Data.Bits(shiftR, (.&.))
 

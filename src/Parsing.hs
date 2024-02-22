@@ -5,28 +5,40 @@
 -- Parsing
 -}
 
-module Parsing (getRuleValue,
+module Parsing (Type(..),
+                Option(..),
+                Conf(..),
+                defaultConf,
+                buildOpt,
+                fillConf,
+                getOpts,
+                checkRuleSet,
+                getRuleValue,
                 getStartValue,
                 getLinesValue,
                 getWindowSize,
-                getMoveValue,
-                getOpts,
-                defaultConf,
-                checkRuleSet) where
+                getMoveValue) where
 
 import Text.Read (readMaybe)
 
-data Type = Rule | Start | Line | Window | Move | None
+data Type = Rule | Start | Line | Window | Move | None deriving (Eq, Show)
 
 data Option = Option {  optType :: Type,
                         optValue :: Int,
                         hasOption :: Conf -> Option}
 
+instance Eq Option where
+    (Option t1 v1 _) == (Option t2 v2 _) = t1 == t2 && v1 == v2
+
+instance Show Option where
+    show (Option t v _) = "Option {optType = " ++ show t ++ ", optValue = " ++ show v ++ ", hasOption = <function>}"
+
 data Conf = Conf {  rule :: Option,
                     start :: Option,
                     line :: Option,
                     window :: Option,
-                    move :: Option}
+                    move :: Option} deriving (Eq, Show)
+
 
 defaultConf :: Conf
 defaultConf = Conf {

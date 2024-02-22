@@ -34,7 +34,9 @@ ghc-options:
 - -Wredundant-constraints
 
 library:
-  source-dirs: src
+  source-dirs:
+            - src
+            - app
 
 executables:
   Wolfram-exe:
@@ -57,3 +59,4 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - Wolfram
+    - hspec
